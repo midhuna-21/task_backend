@@ -8,12 +8,12 @@ import config from "./config/config.js";
 
 
 const app = express();
-let corsOptions={
-    origin:config.API_URL,
-    methods:['GET','POST','PUT','DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    credentials:true
-}
+const corsOptions = {
+    origin: 'https://task-frontend-development.vercel.app', 
+    credentials: true,  
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
 
 dbConnect();
 app.use(express.json());
