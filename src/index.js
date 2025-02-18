@@ -9,22 +9,29 @@ import config from "./config/config.js";
 
 const app = express();
 const corsOptions = {
-    origin: 'https://task-frontend-development.vercel.app', 
-    credentials: true,  
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: (origin, callback) => {
+        const allowedOrigins = ["https://task-frontend-bice-alpha.vercel.app/"];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    credentials: true
 };
 
+// Connect to Database
 dbConnect();
+
+// Middlewares
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan('dev'))
 app.use(express.static("public/"));
-
-
-app.use(cors(corsOptions));
-
 
 app.use("/api", userRoutes);
 
